@@ -1,0 +1,19 @@
+[
+  { "key": "lato", "google": "Lato", "italic": true, "kind": "sans" },
+  { "key": "montserrat", "google": "Montserrat", "italic": true, "kind": "sans" },
+  { "key": "raleway", "google": "Raleway", "italic": true, "kind": "sans" },
+  { "key": "poppins", "google": "Poppins", "italic": true, "kind": "sans" },
+  { "key": "openSans", "google": "Open Sans", "italic": true, "kind": "sans" },
+  { "key": "dmSans", "google": "DM Sans", "italic": true, "kind": "sans" },
+  { "key": "workSans", "google": "Work Sans", "italic": true, "kind": "sans" },
+  { "key": "josefin", "google": "Josefin Sans", "italic": true, "kind": "sans" },
+  { "key": "nunito", "google": "Nunito", "italic": true, "kind": "sans" },
+  { "key": "ibmPlex", "google": "IBM Plex Sans", "italic": true, "kind": "sans" },
+  { "key": "oswald", "google": "Oswald", "italic": false, "kind": "display" },
+  { "key": "playfair", "google": "Playfair Display", "italic": true, "kind": "serif" },
+  { "key": "merriweather", "google": "Merriweather", "italic": true, "kind": "serif" },
+  { "key": "libreBaskerville", "google": "Libre Baskerville", "italic": true, "kind": "serif" },
+  { "key": "ebGaramond", "google": "EB Garamond", "italic": true, "kind": "serif" },
+  { "key": "sourceSerif", "google": "Source Serif 4", "italic": true, "kind": "serif" },
+  { "key": "robotoSlab", "google": "Roboto Slab", "italic": false, "kind": "serif" }
+]

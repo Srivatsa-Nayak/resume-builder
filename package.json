@@ -1,0 +1,43 @@
+{
+  "name": "resume-builder",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-powered resume builder with templates, PDF import/export, BYOK AI and ATS scoring",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "setup": "node scripts/setup.mjs && prisma db push",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^1.0.13",
+    "@prisma/client": "^6.19.3",
+    "@react-pdf/renderer": "^4.9.0",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "bcryptjs": "^3.0.3",
+    "jose": "^6.2.13",
+    "lucide-react": "^1.63.0",
+    "next": "^16.4.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tesseract.js": "^7.0.0",
+    "unpdf": "^1.9.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "prisma": "^6.19.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  }
+}
