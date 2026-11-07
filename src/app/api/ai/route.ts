@@ -4,6 +4,9 @@ import { AiTaskError, runAiTask } from "@/lib/ai/router";
 import { AiTaskSchema } from "@/lib/ai/tasks";
 import { rateLimit } from "@/lib/rate-limit";
 
+// Allow time for slow work on serverless hosts (Vercel's default limit can be shorter): AI model responses.
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
   const { user, error } = await apiUser();
   if (error) return error;

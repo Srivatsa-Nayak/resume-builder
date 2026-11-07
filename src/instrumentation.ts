@@ -2,7 +2,9 @@
 // gallery previews in the background so the first visitor doesn't wait.
 
 export async function register() {
-  if (process.env.NEXT_RUNTIME !== "nodejs" || process.env.NODE_ENV !== "production") return;
+  // Skipped on Vercel: serverless instances are short-lived, so this would rerun on every
+  // cold start; there, previews render on demand and the CDN caches them (s-maxage).
+  if (process.env.NEXT_RUNTIME !== "nodejs" || process.env.NODE_ENV !== "production" || process.env.VERCEL) return;
   setTimeout(async () => {
     const { getTemplatePreview } = await import("@/lib/resume/render-image");
     const { TEMPLATE_LIST } = await import("@/lib/resume/templates");

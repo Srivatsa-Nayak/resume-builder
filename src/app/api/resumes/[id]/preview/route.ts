@@ -7,6 +7,9 @@ import { findUserResume, toRecord } from "@/lib/resume/service";
 
 const cache = new LruCache<Promise<Buffer>>(150);
 
+// Allow time for slow work on serverless hosts (Vercel's default limit can be shorter): rendering a PDF page to an image.
+export const maxDuration = 30;
+
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { user, error } = await apiUser();
   if (error) return error;

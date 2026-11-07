@@ -19,6 +19,9 @@ function mergePersonal(primary: ResumeData, fallback: ResumeData): ResumeData {
   return { ...primary, personal };
 }
 
+// Allow time for slow work on serverless hosts (Vercel's default limit can be shorter): PDF parsing, OCR (5-20s) and AI structuring.
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
   const { user, error } = await apiUser();
   if (error) return error;

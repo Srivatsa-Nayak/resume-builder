@@ -6,11 +6,11 @@ Built with **Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4
 
 ## Quick start
 
-Requirements: **Node.js 20.9+** (tested on Node 24) and npm.
+Requirements: **Node.js 20.9+** (tested on Node 24), npm, and a **PostgreSQL** database (a free Neon database works; see [Deploying to Vercel](#deploying-to-vercel)).
 
 ```bash
 npm install        # installs dependencies and generates the Prisma client
-npm run setup      # creates .env with fresh secrets and the local SQLite database
+npm run setup      # creates .env with fresh secrets (edit DATABASE_URL / DATABASE_URL_UNPOOLED first), then creates the tables
 npm run dev        # http://localhost:3000
 ```
 
@@ -40,6 +40,27 @@ npm start
 ```
 
 Set `APP_URL` to your public URL and serve over HTTPS (session cookies are `Secure` in production).
+
+### Deploying to Vercel
+
+1. **Push the repo to GitHub and import it in Vercel** (Add New → Project). The defaults are correct: Next.js preset, `npm install`, `next build`.
+2. **Create the database:** in the Vercel project, go to **Storage → Create Database → Neon (Postgres)** and connect it to the project. This adds `DATABASE_URL` and `DATABASE_URL_UNPOOLED` automatically.
+3. **Add environment variables** (Settings → Environment Variables), for Production and Preview:
+   - `AUTH_SECRET` and `ENCRYPTION_KEY`: generate each with `openssl rand -base64 32`. **Never change `ENCRYPTION_KEY` afterwards**: users' saved API keys are encrypted with it.
+   - `APP_URL`: your site URL, e.g. `https://your-app.vercel.app`.
+   - `PLATFORM_AI_PROVIDER=openrouter`, `OPENROUTER_API_KEY`, optionally `OPENROUTER_MODEL` and `PLATFORM_AI_DAILY_LIMIT`.
+   - Optional OAuth: `GOOGLE_CLIENT_ID/SECRET`, `GITHUB_CLIENT_ID/SECRET` (callback URLs use `APP_URL`).
+4. **Create the tables** once, from your machine, using the database's connection strings (copy them from Storage → your database → `.env.local` tab into your local `.env`):
+   ```bash
+   npx prisma db push
+   ```
+   Repeat this whenever `prisma/schema.prisma` changes.
+5. **Deploy** (or redeploy so the new variables apply), then check: sign up, open a template, download a PDF, and import a PDF (including a browser-printed one, which uses OCR).
+
+Notes for serverless hosting:
+- Slow routes declare `maxDuration` (60s for imports/AI, 30s for previews). If your plan allows less, imports with OCR may time out; Pro plans allow longer.
+- Template preview images are cached by Vercel's CDN (`s-maxage`), so each is rendered once per deployment.
+- Login/AI rate limits are kept in memory per instance, so they are looser on serverless. For strict limits, back `src/lib/rate-limit.ts` with Upstash Redis (available in the Vercel Marketplace).
 
 ## Scripts
 
@@ -93,11 +114,9 @@ src/lib/pdf/                PDF text extraction and the heuristic resume parser
 src/lib/resume/             Resume schema (zod), templates, theme tokens, sample data
 ```
 
-## Switching to PostgreSQL (e.g. Supabase)
+## Database
 
-1. In `prisma/schema.prisma`, change `provider = "sqlite"` to `provider = "postgresql"`.
-2. Set `DATABASE_URL="postgresql://…"` in `.env`.
-3. Run `npx prisma db push` (or `npx prisma migrate dev --name init` to start using migrations).
+PostgreSQL via Prisma (`prisma/schema.prisma`). Any Postgres works (Neon, Supabase, local Docker): set `DATABASE_URL` (pooled, used by the app) and `DATABASE_URL_UNPOOLED` (direct, used for schema changes; can be the same URL if your database has no pooler), then run `npx prisma db push`. To move to versioned migrations later, use `npx prisma migrate dev --name init`.
 
 ## Testing
 
